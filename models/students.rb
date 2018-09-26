@@ -3,14 +3,14 @@ require('pry-byebug')
 
 class Student
 
-  attr_accessor :first_name, :last_name, :house, :age
+  attr_accessor :first_name, :last_name, :house_id, :age
   attr_reader :id
 
   def initialize(options)
     @id = options["id"].to_i if options["id"]
     @first_name = options['first_name']
     @last_name = options['last_name']
-    @house = options['house']
+    @house_id = options['house_id']
     @age = options["age"].to_i
   end
 
@@ -19,7 +19,7 @@ class Student
   end
 
   def save()
-    sql = "INSERT INTO students (first_name, last_name, house, age)
+    sql = "INSERT INTO students (first_name, last_name, house_id, age)
     VALUES
     (
       $1, $2, $3, $4
@@ -27,7 +27,7 @@ class Student
 
       RETURNING id"
 
-      values = [@first_name, @last_name, @house, @age]
+      values = [@first_name, @last_name, @house_id, @age]
       student_data = SqlRunner.run(sql,values).first
       @id = student_data["id"].to_i
  # binding.pry
@@ -42,9 +42,9 @@ class Student
   # end
 
   def update()
-    sql = "UPDATE students SET (first_name, last_name, house, age) = ($1, $2, $3, $4) WHERE id = $5"
+    sql = "UPDATE students SET (first_name, last_name, house_id, age) = ($1, $2, $3, $4) WHERE id = $5"
 
-    values = [@first_name, @last_name, @house, @age, @id]
+    values = [@first_name, @last_name, @house_id, @age, @id]
     SqlRunner.run(sql, values)
   end
 
@@ -73,7 +73,16 @@ class Student
     sql = "SELECT * FROM students"
 
     students = SqlRunner.run(sql)
-    return students.map {|student| Student.new(student)}
+    all_students = students.map {|student| Student.new(student)}
+    return all_students
+  end
+
+  def find_house()
+    sql = "SELECT * FROM houses WHERE id = $1"
+
+    values = [@house_id]
+    result = SqlRunner.run(sql, values).first
+    return House.new(result)
   end
 
   # binding.pry

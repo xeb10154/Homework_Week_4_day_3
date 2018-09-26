@@ -3,6 +3,7 @@ require("sinatra/contrib/all")
 require("pry-byebug")
 
 require_relative("./models/students")
+require_relative("./models/house")
 also_reload("./models/*")
 
 get "/students" do
@@ -11,6 +12,8 @@ get "/students" do
 end
 
 get '/students/new' do
+@house = House.find_all
+# binding.pry
 erb(:new)
 end
 
@@ -33,7 +36,7 @@ post '/students' do
 end
 
 #update
-post "/pizza-orders/:id" do
+post "/students/:id" do
  order = Student.new(params)
  order.update()
  redirect to "/students"
