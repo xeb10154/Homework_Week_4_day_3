@@ -3,11 +3,11 @@
 <p>House: <%= @student.house%><p>
 <p>Age: <%= @student.age %><p>
 
-  <form method="post" action="/students/<%= @student.id %>/delete">
+  <form method="post" action="/students/<%=@student.id%>/delete">
    <input type="submit" value="Delete"/>
   </form>
 
 
-  <form method="get" action="/students/<%= @student.id%>/edit">
+  <form method="get" action="/students/<%=@student.id%>/edit">
    <input type="submit" value="Edit"/>
   </form>

@@ -20,7 +20,7 @@ get "/students/:id" do
 end
 
 #edit existing student
-get "students/:id/edit" do
+get "/students/:id/edit" do
   @student = Student.find(params[:id])
   erb(:edit)
 end
